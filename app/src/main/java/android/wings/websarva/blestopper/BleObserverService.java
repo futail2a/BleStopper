@@ -31,6 +31,7 @@ public class BleObserverService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+        /*
         NotificationCompat.Builder builder = new NotificationCompat.Builder(BleObserverService.this, "bleobserverservice_notification_channel");
 
         builder.setSmallIcon(android.R.drawable.ic_dialog_info);
@@ -45,14 +46,38 @@ public class BleObserverService extends Service {
         Notification notification = builder.build();
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        manager.notify(1, notification);
-        Log.d("BleObserverService", "onStartCommand");
+        */
+
+        NotificationManager notificationManager =
+                (NotificationManager)getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel channel =
+                new NotificationChannel("bleobserverservice_notification_channel", getString(R.string.msg_notification_title_start), NotificationManager.IMPORTANCE_DEFAULT);
+
+        if(notificationManager != null) {
+            notificationManager.createNotificationChannel(channel);
+            Notification notification = new Notification.Builder(getApplicationContext(), "bleobserverservice_notification_channel")
+                    .setContentTitle(getString(R.string.msg_notification_title_start))
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setContentText("service start")
+                    .build();
+
+            startForeground(1, notification);
+
+            // 10秒後にログ出力
+            try {
+                Thread.sleep(10000);
+                Log.i("INFO", "processing service");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+
+            }
+        }
         return START_NOT_STICKY;
     }
 
     @Override
     public void onDestroy(){
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(BleObserverService.this, "bleobserverservice_notification_channel");
+        /*NotificationCompat.Builder builder = new NotificationCompat.Builder(BleObserverService.this, "bleobserverservice_notification_channel");
 
         builder.setSmallIcon(android.R.drawable.ic_dialog_info);
         builder.setContentTitle(getString(R.string.msg_notification_title_finish));
@@ -67,7 +92,7 @@ public class BleObserverService extends Service {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         manager.notify(1, notification);
-        Log.d("BleObserverService", "onStartCommand");
+        Log.d("BleObserverService", "onStartCommand");*/
     }
 
 }
