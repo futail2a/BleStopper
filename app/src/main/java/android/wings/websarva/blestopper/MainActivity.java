@@ -3,6 +3,7 @@ package android.wings.websarva.blestopper;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,11 +24,13 @@ public class MainActivity extends AppCompatActivity {
         btButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
+                //BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
+                //ba.disable();
+                Intent intent = new Intent(MainActivity.this, BleObserverService.class);
                 if (isChecked) {
-                    ba.enable();
+                    startService(intent);
                 } else {
-                    ba.disable();
+                    stopService(intent);
                 }
             }
         });
